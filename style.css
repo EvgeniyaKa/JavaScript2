@@ -1,0 +1,48 @@
+.form {
+    display: block;
+    width: 400px;
+    padding: 10px;
+    box-shadow: #ccc7c7 0 0 10px;
+}
+label {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+input {
+    display: block;
+    width: calc(100% - 20px);
+    border-radius: 4px;
+    margin-bottom: 5px;
+    padding: 10px;
+    border: #f4f7fc solid 1px;
+    background: #f4f7fc; 
+    box-shadow: ##f4f7fc inset 0 0 100px 100px;
+}
+textarea {
+    display: block;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: #f4f7fc solid 1px;
+    background: #f4f7fc; 
+}
+button {
+    border-radius: 15px;
+    border: none;
+    padding: 5px 10px;
+    background: rgb(153, 168, 189);
+}
+button:hover {
+    background: rgb(105, 140, 192);
+}
+
+.rightForm input,
+.rightForm textarea {
+    border: rgb(56, 168, 62) solid 1px;
+}
+.errorForm input,
+.errorForm textarea {
+    position: relative;
+    border: #d32323 solid 1px;
+}
