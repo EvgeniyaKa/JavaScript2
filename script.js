@@ -91,19 +91,17 @@ const app = new Vue({
 
         addGoodsBasket(good) {
           let idBasket = this.basketGoods.find(product => product.id_product === good.id_product);
-          console.log(idBasket);
+
           if (idBasket) {
             idBasket.quantity++;
             idBasket.totalPrice = idBasket.quantity * idBasket.price;
           }else {
             this.basketGoods.push(good);
-            console.log(idBasket);
+
             Vue.set(good, 'quantity', 1);
             Vue.set(good, 'totalPrice', good.price);
-            console.log(idBasket);
           }
           this.basketGoods.cartCount++;
-          console.log(idBasket);
        },
 
         removeGoodsBasket(good) {
@@ -134,14 +132,8 @@ const app = new Vue({
           
           this.filteredGoods = this.goods.filter(good =>
             good.product_name.includes(this.searchLine)
-          );
+          )}
         },
-      //   filterGoods(){
-      //     let regexp = new RegExp(this.searchLine, 'i');
-      //     this.filterGoods = this.products.filter(el => regexp.test(el.product_name));
-      // }
-      },
-
       mounted() {
         this.makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
           this.goods = JSON.parse(goods);
