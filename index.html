@@ -17,7 +17,7 @@
                     <a href="#">Контакты</a>
                 </nav>
                 <form>
-                   <goods-search id="search-template" v-model="searchLine"></goods-search>
+                    <goods-search id="search-template" v-model="searchLine"></goods-search>
                     <button class="search-button" type="button" @click="filterGoods">Искать</button>
                 </form>
                 <button class="cart-button" type="button" @click="isVisibleCart = !isVisibleCart">Корзина</button>
@@ -39,6 +39,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="script.js"></script>
+    <script src="dist/build.js"></script>
+
 </body>
 </html>
