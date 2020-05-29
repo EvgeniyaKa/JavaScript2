@@ -1,3 +1,7 @@
+import module from './module';
+const calc = module.calc;
+
+
 Vue.component('goods-list', {
   props: ['goods'],
   template: `
@@ -27,10 +31,10 @@ template: `
   v-for="good of goods"
   :good="good"
   :key="good.id_product"
- ></basket-item>
-</div>`
+  ></basket-item>
+  </div>`
      });
-
+  
     Vue.component('basket-item', {
       props: ['good'],
       template: `
@@ -46,18 +50,16 @@ template: `
           </div>    
       `
     });
-
+    
 Vue.component('goods-search', {
   props: ['value'],
   template:`
   <input type="text" class="goods_search"
   v-bind:value="value"
   v-on:input="$emit('input', $event.target.value)">`
-});
+});    
 
-const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
-
-const app = new Vue({
+   const app = new Vue({
       el: '#app',
       data: {
         goods: [],
@@ -88,34 +90,57 @@ const app = new Vue({
           xhr.open('GET', url, true);
           xhr.send();
         },
+        makePOSTRequest(url, data, callback) {
+          let xhr;
+
+          if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+          } else if (window.ActiveXObject) { 
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              callback(xhr.responseText);
+            }
+          }
+          xhr.open('POST', url, true);
+          xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+          xhr.send(data);
+          xhr.send(JSON.stringify(data));
+        
+      },
 
         addGoodsBasket(good) {
           let idBasket = this.basketGoods.find(product => product.id_product === good.id_product);
-          console.log(idBasket);
+          
           if (idBasket) {
             idBasket.quantity++;
             idBasket.totalPrice = idBasket.quantity * idBasket.price;
+            
           }else {
             this.basketGoods.push(good);
-            console.log(idBasket);
+
             Vue.set(good, 'quantity', 1);
             Vue.set(good, 'totalPrice', good.price);
-            console.log(idBasket);
+            
           }
           this.basketGoods.cartCount++;
-          console.log(idBasket);
+          this.makePOSTRequest('/addToCart', idBasket);
        },
 
         removeGoodsBasket(good) {
           let idBasket = this.basketGoods.findIndex(product => product.id_product === good.id_product);
-          console.log(idBasket);
+        
           if (idBasket != -1) {
             if (this.basketGoods[idBasket].quantity > 1) {
                   this.basketGoods[idBasket].quantity--;   
                 } else {
                   this.deleteGoodsBasket(good);
-                }  
+                } 
           }
+          
         },
 
         calcGoodsBasket() {
@@ -131,24 +156,16 @@ const app = new Vue({
         },
 
         filterGoods() {
-          
           this.filteredGoods = this.goods.filter(good =>
             good.product_name.includes(this.searchLine)
           );
-        },
-      //   filterGoods(){
-      //     let regexp = new RegExp(this.searchLine, 'i');
-      //     this.filterGoods = this.products.filter(el => regexp.test(el.product_name));
-      // }
-      },
-
+        }
+      
+    },
       mounted() {
-        this.makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
+        this.makeGETRequest(`/catalogData`, (goods) => {
           this.goods = JSON.parse(goods);
           this.filteredGoods = JSON.parse(goods);
         });
-        this.filteredProducts = this.goods;
       }
     });
-
-   
